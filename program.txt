@@ -1,0 +1,2 @@
+abc.as400lpar.com
+xyz.as400lpar.com

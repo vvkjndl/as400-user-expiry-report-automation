@@ -18,7 +18,7 @@ $callpgm = '"CALL PGM(QGPL/$filename)"'
 
 <# call uidexpalrt pgm on all as400 lpars #>
 $null > $workpath\$filename.logftp
-Get-Content $workpath\hostfile.txt | ForEach-Object -Process {
+Get-Content $workpath\$filename.txt | ForEach-Object -Process {
     echo "open $_ 21" > $workpath/$filename.ftp
     echo $userid >> $workpath/$filename.ftp
     echo $password >> $workpath/$filename.ftp
