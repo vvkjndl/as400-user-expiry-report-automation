@@ -5,11 +5,6 @@
 
 PGM
 
-CREATE:
-                  /* Create user profile database */
-    DSPUSRPRF     USRPRF(*ALL) OUTPUT(*OUTFILE) +
-                  OUTFILE(QGPL/USRPRFDB)
-
 DECLARE:
             /* Variables declaration */
     DCLF    FILE(QGPL/USRPRFDB) OPNID(USRPRFDB) ALWVARLEN(*YES)
