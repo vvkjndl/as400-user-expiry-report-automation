@@ -8,7 +8,7 @@
 set "userid=userid"
 set "password=password"
 set "libname=libname"
-set "filename=program"
+set "filename=usrrptpgm"
 set "string1=empty"
 set "workpath=x:\reports\%filename%"
 mkdir %workpath%\backup > nul 2> nul

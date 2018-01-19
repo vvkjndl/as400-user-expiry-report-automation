@@ -4,7 +4,7 @@
 
 
 <# script configuration #>
-$filename = "program"
+$filename = "usrrptpgm"
 $workpath = "x:\reports\$filename"
 $smtpserver = ""
 $fromemail = ""

@@ -1,0 +1,83 @@
+/*=========================================================================*/
+/*  Script Repository URL:                                                 */
+/*  https://github.com/vivekjindal/as400-userid-expiry-report-automation   */
+/*=========================================================================*/
+
+PGM
+
+CREATE:
+                  /* Create user profile database */
+    DSPUSRPRF     USRPRF(*ALL) OUTPUT(*OUTFILE) +
+                  OUTFILE(QGPL/USRPRFDB)
+
+DECLARE:
+            /* Variables declaration */
+    DCLF    FILE(QGPL/USRPRFDB) OPNID(USRPRFDB) ALWVARLEN(*YES)
+    DCL     VAR(&USERID) TYPE(*CHAR) LEN(10)
+    DCL     VAR(&ISEXP) TYPE(*CHAR) LEN(4)
+    DCL     VAR(&USERTEXT) TYPE(*CHAR) LEN(50)
+    DCL     VAR(&EXPDATE) TYPE(*CHAR) LEN(6)
+    DCL     VAR(&CURDATE) TYPE(*CHAR) LEN(6)
+    DCL     VAR(&EXPLILI) TYPE(*CHAR) LEN(4)
+    DCL     VAR(&CURLILI) TYPE(*CHAR) LEN(4)
+    DCL     VAR(&EXPLILD) TYPE(*DEC) LEN(10 0)
+    DCL     VAR(&CURLILD) TYPE(*DEC) LEN(10 0)
+    DCL     VAR(&EXPDAYD) TYPE(*DEC) LEN(3)
+    DCL     VAR(&EXPDAYC) TYPE(*CHAR) LEN(3)
+    DCL     VAR(&SYS_HOST) TYPE(*CHAR) LEN(8)
+
+CLEAR:
+              /* Clear old data in file before using it */
+    CLRPFM    FILE(QGPL/USRRPTPGM)
+
+READ:
+              /* Read the database file */
+    RCVF      DEV(*FILE) OPNID(USRPRFDB)
+    MONMSG    MSGID(CPF0864) EXEC(GOTO CMDLBL(END))
+    IF        COND(%SST(&USRPRFDB_UPTEXT 1 4) *EQ 'ABCD') +
+              THEN(GOTO CMDLBL(ROUTINE))
+    GOTO      CMDLBL(READ)
+
+ROUTINE:
+                 /* Main function */
+    CHGVAR       VAR(&USERID) VALUE(%SST(&USRPRFDB_UPUPRF 1 10))
+    CHGVAR       VAR(&USERTEXT) VALUE(%SST(&USRPRFDB_UPTEXT 1 50))
+    CHGVAR       VAR(&ISEXP) VALUE(%SST(&USRPRFDB_UPPWEX 1 4))
+    CHGVAR       VAR(&EXPDATE) VALUE(%SST(&USRPRFDB_UPEXPD 1 6))
+    IF           COND(&ISEXP *EQ '*YES') THEN(GOTO CMDLBL(FUNC1))
+    IF           COND(&EXPDATE *EQ ' ') THEN(GOTO CMDLBL(READ))
+    RTVSYSVAL    SYSVAL(QDATE) RTNVAR(&CURDATE)
+    RTVNETA      SYSNAME(&SYS_HOST)
+    CALLPRC      PRC(CEEDAYS) PARM(&CURDATE 'MMDDYY' &CURLILI *OMIT)
+    CHGVAR       VAR(&CURLILD) VALUE(%BIN(&CURLILI))
+    CALLPRC      PRC(CEEDAYS) PARM(&EXPDATE 'YYMMDD' &EXPLILI *OMIT)
+    CHGVAR       VAR(&EXPLILD) VALUE(%BIN(&EXPLILI))
+    IF           COND(&EXPLILD *LT &CURLILD) THEN(GOTO CMDLBL(READ))
+    CHGVAR       VAR(&EXPDAYD) VALUE(&EXPLILD - &CURLILD)
+    CHGVAR       VAR(&EXPDAYC) VALUE(&EXPDAYD)
+    IF           COND(&EXPDAYD *LE 15) THEN(GOTO CMDLBL(FUNC2))
+    GOTO         CMDLBL(READ)
+
+FUNC1:
+                 /* Update sql file for expired users  */
+    RUNSQL       SQL('INSERT INTO QGPL.USRRPTPGM +
+                 (USER_ID,IS_EXP,TEXT_DESC,SYS_HOST) +
+                 VALUES ('''||&USERID|<''',''YES'','''||&USERTEXT|<''' +
+                 ,'''||&SYS_HOST|<''')') +
+                 COMMIT(*NONE)
+    GOTO         CMDLBL(READ)
+
+FUNC2:
+                 /* Update sql file for users expiring in 15 days */
+    CHGVAR       VAR(&EXPDAYC) VALUE(&EXPDAYD)
+    RUNSQL       SQL('INSERT INTO QGPL.USRRPTPGM +
+                 (USER_ID,IS_EXP,TEXT_DESC,EXP_DAYS,SYS_HOST) +
+                 VALUES ('''||&USERID|<''',''NO'','''||&USERTEXT|<''' +
+                 ,'''||&EXPDAYC|<''','''||&SYS_HOST|<''')') +
+                 COMMIT(*NONE)
+    GOTO         CMDLBL(READ)
+
+END:
+    /* Terminate the program */
+
+ENDPGM
