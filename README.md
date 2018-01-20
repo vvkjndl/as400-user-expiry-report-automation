@@ -1,11 +1,14 @@
 This repository contains multiple programs and scripts which are supposed to used altogether. PowerShell script is the parent which triggers the rest.
 
 # Program Flow
-PowerShell script triggers the CLLE PGM on AS400 hosts as defined in text file. CLLE PGM creates a SQL DB file containing list of expired users and users expiring in next 15 days. Only those users are selected that match the first 4 characters in user's text description as defined in CLLE PGM (Optional). CLLE PGM will also add a column for system's host name.  
+PowerShell script triggers the CLLE PGM on AS400 hosts as defined in text file. CLLE PGM creates a SQL DB file containing list of expired users and users expiring in next 15 days. Only those users are selected that match the first 4 characters in user's text description as defined in CLLE PGM (Optional). CLLE PGM will also add a column for system's host name.
+
 ![IBM i Output](https://raw.githubusercontent.com/vivekjindal/as400-userid-expiry-report-automation/master/images/screenshot1.png)  
+
 PowerShell script will then trigger the batch script. Batch script will download the SQL DB file from AS400 servers as defined in text file. The final output is a CSV file with combined data.
 
 PowerShell script then converts CSV file into HTML and turns all cells 'red' that has expiry value as 'YES'. The final output is then sent via email as HTML body.  
+
 ![PowerShell Output](https://raw.githubusercontent.com/vivekjindal/as400-userid-expiry-report-automation/master/images/screenshot2.png)  
 
 # Requirements
