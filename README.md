@@ -28,3 +28,6 @@ DSPUSRPRF USRPRF(\*ALL) OUTPUT(\*OUTFILE) OUTFILE(QGPL/USRPRFDB)
 3. Place PowerShell script, batch script and text file on windows in same location. Customize the paths in scripts as per your preferences.
 4. Add AS400 servers hostnames in text file and remove the dummy ones.
 5. Run the PowerShell script.
+
+# Problems
+FTP logs are not working as intended (Doesn't show if CLLE PGM was triggered successfully on AS400).
