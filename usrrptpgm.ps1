@@ -1,5 +1,5 @@
 <# ################################################################################################ #>
-<# Script Repository URL: https://github.com/vivekjindal/as400-userid-expiry-report-automation      #>
+<# Script Repository URL: https://github.com/vivekjindal/as400-user-expiry-report-automation      #>
 <# ################################################################################################ #>
 
 
