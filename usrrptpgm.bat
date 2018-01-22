@@ -2,6 +2,7 @@
 
 :: ################################################################################################
 :: Script Repository URL:   https://github.com/vivekjindal/as400-user-expiry-report-automation
+:: Written by:              vivek.511201@gmail.com
 :: ################################################################################################
 
 :: script configuration
