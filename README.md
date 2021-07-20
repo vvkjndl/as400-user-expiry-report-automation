@@ -30,7 +30,7 @@ This repository contains multiple programs and scripts which are supposed to use
 `DSPUSRPRF USRPRF(*ALL) OUTPUT(*OUTFILE) OUTFILE(QGPL/USRPRFDB)`
 
 - Create a table where CLLE PGM's output will be stored using the sql file provided in this repository.
-- Customize CLLE as per your needs, place it on AS400 servers and compile it. If you want all expired users and expiring within 15 days without any additional filtering criteria then comment lines 31, 32, 33 and recompile.
+- Customize CLLE as per your needs, place it on AS400 servers and compile it. Sepcify the filtering criteria in line number 33.
 - Place PowerShell script, batch script and text file on windows in same location. Customize the paths in scripts as per your preferences.
 - Add AS400 servers hostnames in text file and remove the dummy ones.
 - Run the PowerShell script.
