@@ -27,7 +27,7 @@ This repository contains multiple programs and scripts which are supposed to use
 
 - A user database file must be required. So export users list in an outfile. Use below command:
 
-`DSPUSRPRF USRPRF(\*ALL) OUTPUT(\*OUTFILE) OUTFILE(QGPL/USRPRFDB)`
+`DSPUSRPRF USRPRF(*ALL) OUTPUT(*OUTFILE) OUTFILE(QGPL/USRPRFDB)`
 
 - Create a table where CLLE PGM's output will be stored using the sql file provided in this repository.
 - Customize CLLE as per your needs, place it on AS400 servers and compile it. If you want all expired users and expiring within 15 days without any additional filtering criteria then comment lines 31, 32, 33 and recompile.
