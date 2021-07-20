@@ -19,13 +19,13 @@ This repository contains multiple programs and scripts which are supposed to use
 
 - SMTP server access so that it can be used to send emails.
 - IBM i Access for Windows must be installed.
-- IBM i OS release 7.1 or greater. (CLLE PGM might work on older releases as well but I have not tested)
+- IBM i OS release 7.1 or greater (CLLE PGM might work on older releases as well but I have not tested).
 - Windows with PowerShell installed.
 - FTP server must be running on AS400.
 
 # Usage
 
-- A user database file must be required. So export users list in an outfile. Use below command:  
+- A user database file must be required. So export users list in an outfile. Use below command:
 
 `DSPUSRPRF USRPRF(\*ALL) OUTPUT(\*OUTFILE) OUTFILE(QGPL/USRPRFDB)`
 
